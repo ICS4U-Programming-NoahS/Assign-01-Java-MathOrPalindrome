@@ -123,8 +123,8 @@ final class MathOrPalindrome {
         // Check if the denominator is zero
         if (numB == 0) {
 
-            // If the denominator is zero, return -1
-            return -1;
+            // If the denominator is zero, return NaN
+            return Double.NaN;
         } else {
             // Calculate and return the quotient
             return numA / numB;
@@ -192,7 +192,6 @@ final class MathOrPalindrome {
 
                         // If its an addition expression
                         if (line.contains("+")) {
-
                             // Split up the numbers by the operator and spaces
                             // The \\ is used to escape the + character,
                             // because it is a character with a special meaning
@@ -204,16 +203,16 @@ final class MathOrPalindrome {
                             double numA = Double.parseDouble(arrayNumStr[0]);
                             double numB = Double.parseDouble(arrayNumStr[1]);
 
-                            // call sum function
+                            // Call sum function
                             double sum = calcSum(numA, numB);
 
-                            // Write the expression to the math output file
+                            // Write the expression to the output file,
                             // rounded to 2 decimal places
                             myWriter.write(line + " = "
-                            + String.format("%.2f", sum) + "\n");
+                                    + String.format("%.2f", sum) + "\n");
 
-                            // If its a subtraction expression
                         } else if (line.contains("-")) {
+
                             // Split up the numbers by the operator and spaces
                             String[] arrayNumStr = line.split(" - ");
 
@@ -221,39 +220,36 @@ final class MathOrPalindrome {
                             double numA = Double.parseDouble(arrayNumStr[0]);
                             double numB = Double.parseDouble(arrayNumStr[1]);
 
-                            // call difference function
+                            // Call difference function
                             double difference = calcDifference(numA, numB);
 
-                            // Write the expression to the math output file
+                            // Write the expression to the output file,
                             // rounded to 2 decimal places
                             myWriter.write(line + " = "
-                            + String.format("%.2f", difference) + "\n");
+                                    + String.format("%.2f", difference)
+                                    + "\n");
 
-                            // If its a multiplication expression
                         } else if (line.contains("*")) {
-
                             // Split up the numbers by the operator and spaces
-                            // Source: https://beginnersbook.com/2013/12/...
-                            //...java-string-split-method-example
-                            // The \\ is used to escape the * character,
+                            // The \\ is used to escape the + character,
                             // because it is a character with a special meaning
+                            // Source: beginnersbook.com/2013/12/java-...
+                            //...string-split-method-example
                             String[] arrayNumStr = line.split(" \\* ");
 
                             // Convert the numbers from strings to doubles
                             double numA = Double.parseDouble(arrayNumStr[0]);
                             double numB = Double.parseDouble(arrayNumStr[1]);
 
-                            // call product function
+                            // Call product function
                             double product = calcProduct(numA, numB);
 
-                            // Write the expression to the math output file
+                            // Write the expression to the output file,
                             // rounded to 2 decimal places
                             myWriter.write(line + " = "
-                            + String.format("%.2f", product) + "\n");
+                                    + String.format("%.2f", product) + "\n");
 
-                            // If its a division expression
                         } else if (line.contains("/")) {
-
                             // Split up the numbers by the operator and spaces
                             String[] arrayNumStr = line.split(" / ");
 
@@ -261,32 +257,28 @@ final class MathOrPalindrome {
                             double numA = Double.parseDouble(arrayNumStr[0]);
                             double numB = Double.parseDouble(arrayNumStr[1]);
 
-                            // call quotient function
+                            // Call quotient function
                             double quotient = calcQuotient(numA, numB);
 
-                            // If the denominator is 0
-                            if (quotient == -1) {
-                                // Write the error message
-                                // to the math output file
+                            // If the quotient is undefined
+                            if (Double.isNaN(quotient)) {
                                 myWriter.write(line + " is undefined.\n");
                             } else {
-                                // Write the expression to the math output file
-                                // rounded to 2 decimal places
+                                // Write the expression to the output file,
                                 myWriter.write(line + " = "
-                                + String.format("%.2f", quotient) + "\n");
+                                        + String.format("%.2f", quotient)
+                                        + "\n");
                             }
+                        // If the expression is not valid
                         } else {
-
-                            // Write the error message to the math output file
                             myWriter.write(line
-                            + " is not a valid expression.\n");
+                                    + " is not a valid expression.\n");
                         }
                     }
+                    // Close file writer
+                    myWriter.close();
 
-                    // Close the file writer
-                     myWriter.close();
-
-                    // Close the file scanner
+                    // Close file scanner
                     fileScanner.close();
 
                     // Display success message
@@ -294,68 +286,68 @@ final class MathOrPalindrome {
                             "Successfully wrote to 'MathOutput.txt'"
                         );
 
+                // Catch any file errors
                 } catch (Exception exception) {
                     // Display error message
                     System.out.println("Unable to read the file.");
                 }
+
             // If the user enters 2
             } else if (programChoice.equals("2")) {
-                // display instructions for the palindrome program
-                System.out.println(
-                        "You have chosen the palindrome program."
-                    );
+                // Palindrome program
+                System.out.println("You have chosen the palindrome program.");
                 try {
-                    // scanner object to read the input file
+                    // Open the input file for reading
                     File file = new File("./PalindromeInput.txt");
 
                     // Create a file scanner object
                     Scanner fileScanner = new Scanner(file);
 
-                    // initialize the number of lines
+                    // Initialize the number of lines
                     int lineNum = 0;
 
-                    // While it has a next line in the file
+                    // While there is another line in the file
                     while (fileScanner.hasNextLine()) {
 
-                        // Read the next line
+                        // Read the line
                         fileScanner.nextLine();
 
-                        // increment the number of lines
+                        // Increment the number of lines
                         lineNum++;
                     }
 
-                    // initialize the array of words
+                    // Create an array of strings to hold the words
                     String[] arrayWords = new String[lineNum];
 
-                    // Create a new file scanner object
+                    // Create another file scanner object
                     Scanner scanner2 = new Scanner(file);
 
-                    // initialize counter
+                    // Reset the counter
                     int counter = 0;
 
-                    // while it has a next line in the file
+                    // Read the file again
                     while (scanner2.hasNextLine()) {
 
-                        // Read the next line
+                        // Read the line
+                        // and store it in the array
                         arrayWords[counter] = scanner2.nextLine();
 
-                        // increment the counter
+                        // Increment the counter
                         counter++;
                     }
 
-                    // Close the file scanner
+                    // Close the scanner
                     scanner2.close();
 
-                    // Create the palindrome output file
+                    // Open output file for writing
                     FileWriter myWriter = new FileWriter(
                             "./PalindromeOutput.txt"
                         );
 
-                    // call palindrome function
+                    // Call the palindrome function
                     String palindromeMessage = findPalindromes(arrayWords);
 
-                    // Write the palindrome message
-                    // to the palindrome output file
+                    // Write to the palindrome output file
                     myWriter.write(palindromeMessage);
 
                     // Close the file writer
@@ -372,16 +364,16 @@ final class MathOrPalindrome {
                     // Display error message
                     System.out.println("Unable to read the file.");
                 }
-            // If the user enters q
-            } else if (programChoice.equals("q")) {
-                // display goodbye message
-                System.out.println("Thanks for playing!");
-            } else {
-                // If the user enters an invalid choice
-                System.out.println("Invalid choice. Try again.");
-            }
 
-        // While the user does not enter q
+            // If the user enters 'q'
+            } else if (programChoice.equals("q")) {
+                System.out.println("Thanks for playing!");
+            // If the user enters anything else
+        } else {
+            System.out.println("Invalid choice. Try again.");
+        }
+
+        // Loop until the user enters 'q'
         } while (!programChoice.equals("q"));
 
         // Closing Scanner
